@@ -1,3 +1,6 @@
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/841660202/w57.svg)](https://greenkeeper.io/)
+
 * 项目更换版本
 * [添加多渠道打包](https://github.com/841660202/w57/blob/master/%E5%A4%9A%E6%B8%A0%E9%81%93%E6%89%93%E5%8C%85.md)
 * 热推送（假设你已经有账号并且登陆）
