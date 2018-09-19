@@ -1,18 +1,6 @@
 * 项目更换版本
 * 添加多渠道打包
 
- //flavorDimensions("company")
-
- /*productFlavors {
-         a {
-            dimension "company"
-             buildConfigField "String","FLAVOR_NAME","\"companyB\""
-         }
-         b {
-            dimension "company"
-             buildConfigField "String","FLAVOR_NAME","\"companyB\""
-         }
-    }*/
 * 热推送（假设你已经有账号并且登陆）
 
 ```
@@ -34,13 +22,18 @@ code-push app add w57-android android react-native
 | Production | lTA3fljYpOkIosKk6LDqqkdJh3hVe5678dc0-13bd-4de0-8573-dd6806745d95  |
 | Staging    | tNhHdxP-xGy_C8DmQJGJWswa80gqe5678dc0-13bd-4de0-8573-dd6806745d95 |
 
+```
+打包
 react-native bundle --platform android --entry-file index.js --bundle-output ./bundles/index.android.bundle --dev false
 
-
+发布
 code-push release-react w57-android "android" --d "Staging" --t 1.0  --des "测试"
+发布
 code-push release-react w57-android "android" --d "Production" --t 1.0  --des "测试"
 
-
+查看发布历史
 code-push deployment history w57-android Production
-
+查看key
 code-push deployment ls w57-android -k
+
+```
