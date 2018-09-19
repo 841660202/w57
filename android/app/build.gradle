@@ -73,10 +73,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+        entryFile: "index.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -103,7 +104,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        flavorDimensions("company")
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -117,53 +117,57 @@ android {
         }
     }
     signingConfigs {
-      releaseStaging {
-          storeFile file("./weimeng.keystore")
-          storePassword "weimeng@2018"
-          keyAlias "weimeng.keystore"
-          keyPassword "weimeng@2018"
-      }
-      release {
-          storeFile file("./weimeng.keystore")
-          storePassword "weimeng@2018"
-          keyAlias "weimeng.keystore"
-          keyPassword "weimeng@2018"
-      }
+        releaseStaging {
+            storeFile file("./weimeng.keystore")
+            storePassword "weimeng@2018"
+            keyAlias "weimeng.keystore"
+            keyPassword "weimeng@2018"
+        }
+        release {
+            storeFile file("./weimeng.keystore")
+            storePassword "weimeng@2018"
+            keyAlias "weimeng.keystore"
+            keyPassword "weimeng@2018"
+        }
     }
     buildTypes {
-       release {
-          minifyEnabled enableProguardInReleaseBuilds
-          proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-          buildConfigField "String", "CODEPUSH_KEY", '"mf1V7DX6Y1kgE7sSh9v97fsKypQQe5678dc0-13bd-4de0-8573-dd6806745d95"'
-          signingConfig signingConfigs.release
-          // minifyEnabled true
-          zipAlignEnabled true
-       }
-       staging {
-          minifyEnabled enableProguardInReleaseBuilds
-          proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-          buildConfigField "String", "CODEPUSH_KEY", '"8EdEwzoSP0k-Uxeqme7CoDLDlkTbe5678dc0-13bd-4de0-8573-dd6806745d95"'
-          signingConfig signingConfigs.releaseStaging
-       }
-       debug {
-          //applicationIdSuffix ".debug"
-          buildConfigField "String", "CODEPUSH_KEY", '""'
-       }
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            zipAlignEnabled true
+        }
+        debug {
+            //applicationIdSuffix ".debug"
+            buildConfigField "String", "CODEPUSH_KEY", '""'
+        }
     }
-    productFlavors {
-         one {
-            dimension "company"
-         }
-         two {
-            dimension "company"
-         }
-    }
+//    flavorDimensions("env")
+//
+//    productFlavors {
+//        staging {
+//            dimension "env"
+//            applicationIdSuffix ".debug"
+//            applicationId "com.hailong.staging"
+//            buildConfigField "String", "FLAVOR_NAME", "\"staging\""
+//            buildConfigField "String", "CODEPUSH_KEY", '"BY0qqc7pa631n_j4bFaCuVP_At44e5678dc0-13bd-4de0-8573-dd6806745d95"'
+//
+//        }
+//        production {
+//            dimension "env"
+//            applicationIdSuffix ".release"
+//            applicationId "com.hailong.release"
+//            buildConfigField "String", "CODEPUSH_KEY", '"UGyy5n6yjCKUyPVrm7vD91zFi5GAe5678dc0-13bd-4de0-8573-dd6806745d95"'
+//            buildConfigField "String", "FLAVOR_NAME", "\"production\""
+//        }
+//    }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -174,6 +178,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-camera')
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-code-push')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
